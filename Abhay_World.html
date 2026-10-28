@@ -1,0 +1,327 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ab Hay World</title>
+<style>
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #07111f;
+    color: #f1f5f9;
+  }
+  header {
+    padding: 25px 15px;
+    text-align: center;
+    background: linear-gradient(135deg, #063b66, #111827);
+    border-bottom: 2px solid #22d3ee;
+  }
+  header h1 { color: #67e8f9; margin: 5px; }
+  nav {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 8px;
+    padding: 15px;
+    background: #101d30;
+  }
+  button {
+    padding: 10px 14px;
+    border: 0;
+    border-radius: 8px;
+    cursor: pointer;
+    background: #0891b2;
+    color: white;
+    font-weight: bold;
+  }
+  button:hover { background: #0e7490; }
+  main { max-width: 900px; margin: auto; padding: 20px; }
+  .panel {
+    display: none;
+    background: #101d30;
+    border: 1px solid #263b52;
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 18px;
+  }
+  .panel.active { display: block; }
+  .hero {
+    text-align: center;
+    padding: 35px 15px;
+    background: radial-gradient(ellipse, #164e63, #07111f 75%);
+    border-radius: 15px;
+    margin-bottom: 20px;
+  }
+  .hero h2 { font-size: 30px; color: #67e8f9; }
+  input, textarea {
+    width: 100%;
+    padding: 12px;
+    margin: 8px 0;
+    border: 1px solid #475569;
+    border-radius: 7px;
+    background: #07111f;
+    color: white;
+  }
+  .result {
+    padding: 12px;
+    margin: 8px 0;
+    background: #1e293b;
+    border-radius: 7px;
+    overflow-wrap: anywhere;
+  }
+  .muted { color: #94a3b8; font-size: 14px; }
+  footer { text-align: center; padding: 25px; color: #94a3b8; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>🌍 Ab Hay World</h1>
+  <p>Your Offline Knowledge Universe</p>
+</header>
+
+<nav>
+  <button onclick="show('home')">Home</button>
+  <button onclick="show('dictionary')">Dictionary</button>
+  <button onclick="show('math')">Mathematics</button>
+  <button onclick="show('notes')">My Library</button>
+  <button onclick="show('chat')">Chat Demo</button>
+  <button onclick="show('map')">World Map</button>
+</nav>
+
+<main>
+  <section id="home" class="panel active">
+    <div class="hero">
+      <h2>Welcome to Abhay World</h2>
+      <h3>Welcome to Abhay ❤️</h3>
+      <p>Welcome to this website!</p>
+      <p>Your world of knowledge, available offline.</p>
+      <p>🌍 Explore · 📚 Learn · 🧮 Calculate · 💬 Connect</p>
+    </div>
+    <div class="result">
+      <h3>Welcome, Explorer!</h3>
+      <p>This website runs without internet once you have saved this file.</p>
+      <p>Use the buttons above to explore its features.</p>
+    </div>
+  </section>
+
+  <section id="dictionary" class="panel">
+    <h2>📚 Offline Dictionary</h2>
+    <input id="word" placeholder="Enter a word..."
+      oninput="searchWord()">
+    <div id="wordResult" class="result">
+      Try words such as computer, world, science or knowledge.
+    </div>
+    <p class="muted">Starter dictionary: sample words only. Add a larger dictionary dataset for more definitions.</p>
+  </section>
+
+  <section id="math" class="panel">
+    <h2>🧮 Mathematics Library</h2>
+    <input id="formulaSearch" placeholder="Search formulas..."
+      oninput="searchFormula()">
+    <div id="formulaResults"></div>
+    <hr>
+    <h3>Quick Calculator</h3>
+    <input id="num1" type="number" placeholder="First number">
+    <input id="num2" type="number" placeholder="Second number">
+    <button onclick="calculate('+')">Add +</button>
+    <button onclick="calculate('-')">Subtract −</button>
+    <button onclick="calculate('*')">Multiply ×</button>
+    <button onclick="calculate('/')">Divide ÷</button>
+    <div id="calcResult" class="result">Your answer will appear here.</div>
+  </section>
+
+  <section id="notes" class="panel">
+    <h2>📖 My Offline Library</h2>
+    <p>Save your own notes in this browser.</p>
+    <input id="noteTitle" placeholder="Note title">
+    <textarea id="noteText" rows="5" placeholder="Write something to remember..."></textarea>
+    <button onclick="saveNote()">Save Note</button>
+    <div id="savedNotes"></div>
+  </section>
+
+  <section id="chat" class="panel">
+    <h2>💬 Local Chat Demonstration</h2>
+    <p class="muted">
+      This demo shares messages between open tabs of this website
+      in the same browser. It is not a multi-user network chat.
+    </p>
+    <input id="chatName" placeholder="Your display name">
+    <div id="messages" class="result">Welcome to Ab Hay World Chat!</div>
+    <input id="chatMessage" placeholder="Type a message...">
+    <button onclick="sendMessage()">Send Message</button>
+  </section>
+
+  <section id="map" class="panel">
+    <h2>🌍 Offline World Map</h2>
+    <div class="result">
+      <p>World map data will be added here.</p>
+      <p>To use detailed maps without internet, you must download
+      the map data in advance and store it on your device or local server.</p>
+      <p>Worldwide street-level maps can require many gigabytes of storage.</p>
+    </div>
+    <p class="muted">No online map is loaded by this starter version.</p>
+  </section>
+</main>
+
+<footer>
+  © Ab Hay World · Created for Abhay<br>
+  <span class="muted">Your knowledge. Your world. Offline.</span>
+</footer>
+
+<script>
+const dictionary = {
+  computer: "An electronic machine that processes and stores data.",
+  world: "The Earth and all the people and things on it.",
+  science: "The systematic study of the natural world.",
+  knowledge: "Information and understanding gained through learning.",
+  internet: "A worldwide network connecting computers.",
+  mathematics: "The study of numbers, shapes, quantities and patterns.",
+  offline: "Working without an internet connection.",
+  website: "A collection of related pages available through a browser.",
+  programming: "Writing instructions that a computer can execute.",
+  universe: "All space, time, matter and energy."
+};
+
+const formulas = [
+  {name:"Area of a rectangle", formula:"Area = length × width"},
+  {name:"Area of a triangle", formula:"Area = ½ × base × height"},
+  {name:"Area of a circle", formula:"Area = π × radius²"},
+  {name:"Circle circumference", formula:"C = 2 × π × radius"},
+  {name:"Pythagorean theorem", formula:"a² + b² = c²"},
+  {name:"Speed", formula:"Speed = distance ÷ time"},
+  {name:"Simple interest", formula:"Interest = principal × rate × time ÷ 100"},
+  {name:"Percentage", formula:"Percentage = (part ÷ whole) × 100"},
+  {name:"Newton's second law", formula:"Force = mass × acceleration"},
+  {name:"Quadratic equation", formula:"x = (-b ± √(b² - 4ac)) ÷ 2a"}
+];
+
+function show(id) {
+  document.querySelectorAll(".panel").forEach(
+    panel => panel.classList.remove("active")
+  );
+  document.getElementById(id).classList.add("active");
+}
+
+function searchWord() {
+  const query = document.getElementById("word").value.trim().toLowerCase();
+  const matches = Object.entries(dictionary).filter(
+    ([word, definition]) =>
+      word.includes(query) || definition.toLowerCase().includes(query)
+  );
+  document.getElementById("wordResult").innerHTML = query
+    ? (matches.length
+      ? matches.map(([word, definition]) =>
+          `<div><strong>${escapeHTML(word)}</strong><p>${escapeHTML(definition)}</p></div>`
+        ).join("<hr>")
+      : "No matching word in this starter dictionary.")
+    : "Type a word to search.";
+}
+
+function searchFormula() {
+  const query = document.getElementById("formulaSearch").value.toLowerCase();
+  const matches = formulas.filter(item =>
+    (item.name + " " + item.formula).toLowerCase().includes(query)
+  );
+  document.getElementById("formulaResults").innerHTML = matches.map(item =>
+    `<div class="result"><strong>${escapeHTML(item.name)}</strong><br>${escapeHTML(item.formula)}</div>`
+  ).join("") || "No matching formula found.";
+}
+
+function calculate(operator) {
+  const a = Number(document.getElementById("num1").value);
+  const b = Number(document.getElementById("num2").value);
+  if (!document.getElementById("num1").value ||
+      !document.getElementById("num2").value) {
+    document.getElementById("calcResult").textContent = "Enter both numbers.";
+    return;
+  }
+  if (operator === "/" && b === 0) {
+    document.getElementById("calcResult").textContent = "Cannot divide by zero.";
+    return;
+  }
+  let result;
+  if (operator === "+") result = a + b;
+  if (operator === "-") result = a - b;
+  if (operator === "*") result = a * b;
+  if (operator === "/") result = a / b;
+  document.getElementById("calcResult").textContent = "Answer: " + result;
+}
+
+function escapeHTML(value) {
+  return String(value).replace(/[&<>"']/g, char => ({
+    "&":"&amp;", "<":"&lt;", ">":"&gt;",
+    '"':"&quot;", "'":"&#39;"
+  })[char]);
+}
+
+function saveNote() {
+  const title = document.getElementById("noteTitle").value.trim();
+  const text = document.getElementById("noteText").value.trim();
+  if (!title || !text) {
+    alert("Please enter a title and note.");
+    return;
+  }
+  const notes = JSON.parse(localStorage.getItem("abhayNotes") || "[]");
+  notes.push({title, text});
+  localStorage.setItem("abhayNotes", JSON.stringify(notes));
+  document.getElementById("noteTitle").value = "";
+  document.getElementById("noteText").value = "";
+  renderNotes();
+}
+
+function renderNotes() {
+  const notes = JSON.parse(localStorage.getItem("abhayNotes") || "[]");
+  document.getElementById("savedNotes").innerHTML = notes.map((note, i) =>
+    `<div class="result"><strong>${escapeHTML(note.title)}</strong>
+    <p>${escapeHTML(note.text)}</p>
+    <button onclick="deleteNote(${i})">Delete</button></div>`
+  ).join("") || "No saved notes yet.";
+}
+
+function deleteNote(index) {
+  const notes = JSON.parse(localStorage.getItem("abhayNotes") || "[]");
+  notes.splice(index, 1);
+  localStorage.setItem("abhayNotes", JSON.stringify(notes));
+  renderNotes();
+}
+
+// Local demonstration only: this is not a secure account system.
+const channel = "abhayWorldLocalChat";
+let chatChannel;
+try {
+  chatChannel = new BroadcastChannel(channel);
+  chatChannel.onmessage = event => displayMessage(event.data);
+} catch (error) {
+  document.getElementById("messages").textContent =
+    "Chat is not supported in this browser.";
+}
+
+function displayMessage(message) {
+  const line = document.createElement("p");
+  line.textContent = message;
+  document.getElementById("messages").appendChild(line);
+}
+
+function sendMessage() {
+  const name = document.getElementById("chatName").value.trim();
+  const input = document.getElementById("chatMessage");
+  const message = input.value.trim();
+  if (!name || !message) {
+    alert("Enter your name and a message.");
+    return;
+  }
+  const text = name + ": " + message;
+  displayMessage(text);
+  if (chatChannel) chatChannel.postMessage(text);
+  input.value = "";
+}
+
+searchFormula();
+renderNotes();
+</script>
+</body>
+</html>
